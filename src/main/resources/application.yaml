@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: user-management
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/db_user_management?useSSL=false&serverTimezone=UTC
+    username: root
+    password:
+
+jwt:
+  secret: mysecretkeymysecretkeymysecretkeymysecretkey
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+
+server:
+  port: 8080
+
