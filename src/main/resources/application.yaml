@@ -3,12 +3,9 @@ spring:
     name: user-management
 
   datasource:
-    url: jdbc:mysql://localhost:3306/db_user_management?useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/user_management?useSSL=false&serverTimezone=UTC
     username: root
-    password:
-
-jwt:
-  secret: mysecretkeymysecretkeymysecretkeymysecretkey
+    password: root123
 
   jpa:
     hibernate:
@@ -18,6 +15,8 @@ jwt:
       hibernate:
         format_sql: true
 
+jwt:
+  secret: mysecretkeymysecretkeymysecretkeymysecretkey
+
 server:
   port: 8080
-
