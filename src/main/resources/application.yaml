@@ -7,9 +7,6 @@ spring:
     username: root
     password:
 
-jwt:
-  secret: mysecretkeymysecretkeymysecretkeymysecretkey
-
   jpa:
     hibernate:
       ddl-auto: update
@@ -18,6 +15,8 @@ jwt:
       hibernate:
         format_sql: true
 
+jwt:
+  secret: mysecretkeymysecretkeymysecretkeymysecretkey
+
 server:
   port: 8080
-
