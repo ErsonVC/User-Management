@@ -32,7 +32,6 @@ public class SecurityConfig {
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
-
         return new BCryptPasswordEncoder();
     }
 
@@ -49,6 +48,8 @@ public class SecurityConfig {
         return source;
     }
 
+
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
@@ -59,20 +60,16 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
-                        .requestMatchers(HttpMethod.POST,"/api/users").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
                         .anyRequest().authenticated()
                 )
 
-                .exceptionHandling(exception -> exception
-                        .authenticationEntryPoint((request, response, ex) -> {
+                .exceptionHandling(ex -> ex
+                        .authenticationEntryPoint((request, response, authException) -> {
                             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                             response.setContentType("application/json");
-                            response.getWriter().write("""
-                    {
-                      "error": "UNAUTHORIZED",
-                      "message": "Token inválido o ausente"
-                    }
-                    """);
+                            response.getWriter()
+                                    .write("{\"error\":\"UNAUTHORIZED\",\"message\":\"Token inválido o ausente\"}");
                         })
                         .accessDeniedHandler(accessDeniedHandler)
                 )
@@ -80,24 +77,5 @@ public class SecurityConfig {
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
-    }
-
-    @Component
-    public class CustomAccessDeniedHandler implements AccessDeniedHandler {
-
-        @Override
-        public void handle(HttpServletRequest request,
-                           HttpServletResponse response,
-                           AccessDeniedException ex) throws IOException {
-
-            response.setStatus(HttpServletResponse.SC_FORBIDDEN);
-            response.setContentType("application/json");
-            response.getWriter().write("""
-        {
-          "error": "FORBIDDEN",
-          "message": "No tienes permisos para acceder a este recurso"
-        }
-        """);
-        }
     }
 }
