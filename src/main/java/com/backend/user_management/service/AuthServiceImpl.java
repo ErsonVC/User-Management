@@ -5,6 +5,7 @@ import com.backend.user_management.dto.LoginResponse;
 import com.backend.user_management.entity.User;
 import com.backend.user_management.exception.BadRequestException;
 import com.backend.user_management.repository.UserRepository;
+import com.backend.user_management.security.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class AuthServiceImpl implements AuthService {
             throw new BadRequestException("Credenciales Invalidas");
         }
 
-        String token = jwtService.generateToken(user.getEmail());
+        String token = jwtService.generateToken(user);
 
         return LoginResponse.builder()
                 .id(user.getId())
