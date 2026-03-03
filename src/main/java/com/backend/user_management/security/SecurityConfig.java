@@ -28,7 +28,11 @@ import java.util.List;
 public class SecurityConfig {
 
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final AccessDeniedHandler accessDeniedHandler;
+
+    private final AccessDeniedHandler customAccessDeniedHandler;
+
+
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -64,18 +68,16 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
 
-                .exceptionHandling(ex -> ex
-                        .authenticationEntryPoint((request, response, authException) -> {
-                            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                            response.setContentType("application/json");
-                            response.getWriter()
-                                    .write("{\"error\":\"UNAUTHORIZED\",\"message\":\"Token inválido o ausente\"}");
-                        })
-                        .accessDeniedHandler(accessDeniedHandler)
+                // --- AQUÍ VA TU CÓDIGO ---
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                        .accessDeniedHandler(customAccessDeniedHandler)
                 )
+                // -------------------------
 
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 }
+
