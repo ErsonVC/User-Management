@@ -4,6 +4,7 @@ import com.backend.user_management.dto.ErrorResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
@@ -13,9 +14,11 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 
 @Component
+@RequiredArgsConstructor // Agregar
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
-    private final ObjectMapper objectMapper = new ObjectMapper();
+    // Cambia esto: inyectamos el bean gestionado por Spring
+    private final ObjectMapper objectMapper;
 
     @Override
     public void commence(
@@ -34,6 +37,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 
         response.setStatus(HttpStatus.UNAUTHORIZED.value());
         response.setContentType("application/json");
+        // Ahora objectMapper podrá usar el @JsonFormat que está en el DTO
         response.getWriter().write(objectMapper.writeValueAsString(error));
     }
 }
