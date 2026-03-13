@@ -5,6 +5,7 @@ import com.backend.user_management.dto.UserCreateRequest;
 import com.backend.user_management.dto.UserResponse;
 import com.backend.user_management.dto.UserUpdateRequest;
 import com.backend.user_management.entity.User;
+import com.backend.user_management.security.ApiPaths;
 import com.backend.user_management.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping(ApiPaths.USERS)
 @RequiredArgsConstructor
 public class UserController {
 

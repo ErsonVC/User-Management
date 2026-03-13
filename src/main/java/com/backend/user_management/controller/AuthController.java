@@ -2,6 +2,7 @@ package com.backend.user_management.controller;
 
 import com.backend.user_management.dto.LoginRequest;
 import com.backend.user_management.dto.LoginResponse;
+import com.backend.user_management.security.ApiPaths;
 import com.backend.user_management.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/auth")
+@RequestMapping(ApiPaths.AUTH)
 public class AuthController {
 
     private final AuthService authService;
