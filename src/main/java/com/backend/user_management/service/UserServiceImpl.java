@@ -81,8 +81,8 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Usuario no encontrado con id: " + id));
 
-        if (!isAdmin(currentUser) &&
-                !currentUser.getId().equals(targetUser.getId())) {
+        if (currentUser == null || (!isAdmin(currentUser) &&
+                !currentUser.getId().equals(targetUser.getId()))) {
 
             throw new AccessDeniedException("Acceso denegado");
         }
@@ -92,8 +92,16 @@ public class UserServiceImpl implements UserService {
 
     public UserResponse getUserByEmail(String email) {
 
+        User currentUser = getCurrentUser();
+
         User user = userRepository.findByEmailAndActiveTrue(email)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario no encontrado con email: " + email));
+
+        if (currentUser == null || (!isAdmin(currentUser) &&
+                !currentUser.getId().equals(user.getId()))) {
+
+            throw new AccessDeniedException("No puedes modificar otro usuario");
+        }
 
         return mapToResponse(user);
     }
@@ -108,8 +116,8 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Usuario no encontrado con id: " + id));
 
-        if (!isAdmin(currentUser) &&
-                !currentUser.getId().equals(user.getId())) {
+        if (currentUser == null ||(!isAdmin(currentUser) &&
+                !currentUser.getId().equals(user.getId()))) {
 
             throw new AccessDeniedException("No puedes modificar otro usuario");
         }
